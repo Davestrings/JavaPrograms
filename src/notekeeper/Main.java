@@ -1,17 +1,19 @@
 package notekeeper;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class Main {
     private static ObjectOutputStream output;
+    private static ObjectInputStream input;
+
     public static void main(String[] args){
-    openFile();
-    readRecord();
+//    openFile();
+//    writeRecord();
+        readFile();
+        readRecord();
     }
     public static void openFile(){
         try{
@@ -22,7 +24,7 @@ public class Main {
         System.exit(-1);
         }
     }
-    public static void readRecord(){
+    public static void writeRecord(){
         ModuleInfo tModule = new ModuleInfo("class members", "Instance variable", false);
         ModuleInfo tModule2 = new ModuleInfo("Iterators2", "For loop", true);
         ModuleInfo tModule3 = new ModuleInfo("Iterators3", "Do while", true);
@@ -53,5 +55,30 @@ public class Main {
         }
 
 
+    }
+    public static void readFile(){
+        try{
+            FileInputStream file = new FileInputStream("course.tmp");
+            input = new ObjectInputStream(file);
+        }catch(IOException ex){
+            System.err.println("Error opening file");
+            System.exit(-1);
+        }
+    }
+    public static void readRecord(){
+        try{
+            List<CourseInfo> courseInfos = (List<CourseInfo>) input.readObject();
+            for(CourseInfo course : courseInfos){
+                System.out.println(course);
+            }
+            input.close();
+            System.out.println("File read sucessfully");
+        }catch (IOException ex){
+            System.err.println("Error reading file");
+            System.exit(-1);
+        }catch (ClassNotFoundException ex){
+            System.err.println("Class cast error");
+            System.exit(-1);
+        }
     }
 }
