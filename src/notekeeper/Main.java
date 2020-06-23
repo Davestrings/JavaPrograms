@@ -10,8 +10,8 @@ public class Main {
     private static ObjectInputStream input;
 
     public static void main(String[] args){
-//    openFile();
-//    writeRecord();
+        openFile();
+        writeRecord();
         readFile();
         readRecord();
     }
