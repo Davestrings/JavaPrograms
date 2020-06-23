@@ -12,6 +12,7 @@ public class Main {
         createFile("oldmast.txt");
         addMasterRecord();
         createFile("trans.txt");
+        addTransactionRecord();
     }
     public static void createFile(String fileName){
        try{
@@ -47,7 +48,21 @@ public class Main {
 
     }
     public static void addTransactionRecord(){
-        TransactionRecord record = new TransactionRecord();
+        TransactionRecord record = new TransactionRecord(100, 27.14);
+        TransactionRecord record1 = new TransactionRecord(300, 62.11);
+        TransactionRecord record2 = new TransactionRecord(400, 100.56);
+        TransactionRecord record3 = new TransactionRecord(900, 82.17);
+
+        try{
+            output.writeObject(record.toString());
+            output.writeObject(record1.toString());
+            output.writeObject(record2.toString());
+            output.writeObject(record3.toString());
+        }catch (IOException ex){
+            System.err.println("Error writing to file");
+            ex.printStackTrace();
+            System.exit(-1);
+        }
     }
 
 }
