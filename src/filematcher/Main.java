@@ -14,7 +14,23 @@ public class Main {
         createFile("trans.txt");
         addTransactionRecord();
     }
-    public static void createFile(String fileName){
+    private static boolean isValidPath(String fileName){
+        String[] token = fileName.split("\\.");
+        if(token.length < 2)
+            return true;
+
+        return false;
+    }
+    public static void createFile(String fileName) throws IllegalArgumentException{
+        /**
+         * create a file with fileName argument
+         * */
+        if(fileName == null)
+            throw new NullPointerException("Null value not accepted");
+
+        if(isValidPath(fileName))
+            throw new IllegalArgumentException("Path should have a (.) extension");
+
        try{
            File file = new File(fileName);
            fileOut = new FileOutputStream(file, true);
