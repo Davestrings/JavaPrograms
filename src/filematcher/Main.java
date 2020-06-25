@@ -9,19 +9,26 @@ public class Main {
     private static ObjectOutputStream output;
 
     public static void main(String[] args){
-        createFile("oldmast.txt");
+        createFile("oldmast.txt", false);
         addMasterRecord();
-        createFile("trans.txt");
+        createFile("trans.txt", false);
         addTransactionRecord();
+        try{
+            FileMatcher.openFile("oldmast.txt");
+        }catch (FileNotFoundException ex){
+            System.err.println("File does not exist");
+        }
+        FileMatcher.readMasterRecord();
+        FileMatcher.processRecords();
     }
-    private static boolean isValidPath(String fileName){
+    protected static boolean isValidPath(String fileName){
         String[] token = fileName.split("\\.");
         if(token.length < 2)
             return true;
 
         return false;
     }
-    public static void createFile(String fileName) throws IllegalArgumentException{
+    public static void createFile(String fileName, boolean canAppend) throws IllegalArgumentException{
         /**
          * create a file with fileName argument
          * */
@@ -33,7 +40,7 @@ public class Main {
 
        try{
            File file = new File(fileName);
-           fileOut = new FileOutputStream(file, true);
+           fileOut = new FileOutputStream(file, canAppend);
            output = new ObjectOutputStream(fileOut);
        }catch (FileNotFoundException | SecurityException ex){
            System.err.println("Error opening file");
@@ -50,10 +57,10 @@ public class Main {
         Account account3 = new Account("Suzy", "Green", 700, -14.22);
 
        try{
-           output.writeObject(account.toString());
-           output.writeObject(account1.toString());
-           output.writeObject(account2.toString());
-           output.writeObject(account3.toString());
+           output.writeObject(account);
+           output.writeObject(account1);
+           output.writeObject(account2);
+           output.writeObject(account3);
 
            System.out.println("object writing complete");
        }catch (IOException ex){
@@ -70,10 +77,10 @@ public class Main {
         TransactionRecord record3 = new TransactionRecord(900, 82.17);
 
         try{
-            output.writeObject(record.toString());
-            output.writeObject(record1.toString());
-            output.writeObject(record2.toString());
-            output.writeObject(record3.toString());
+            output.writeObject(record);
+            output.writeObject(record1);
+            output.writeObject(record2);
+            output.writeObject(record3);
         }catch (IOException ex){
             System.err.println("Error writing to file");
             ex.printStackTrace();
